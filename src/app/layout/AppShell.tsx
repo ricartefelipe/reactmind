@@ -15,7 +15,9 @@ export function AppShell() {
         </Button>
       </header>
       <nav className="shell__nav" aria-label="Navegação principal">
-        <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/" end>
+          Dashboard
+        </NavLink>
         <NavLink to="/transactions">Extrato</NavLink>
         <NavLink to="/beneficiaries">Favorecidos</NavLink>
         <NavLink to="/transfers/pix">PIX</NavLink>

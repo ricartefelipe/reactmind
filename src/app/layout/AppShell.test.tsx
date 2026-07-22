@@ -32,6 +32,7 @@ describe('AppShell', () => {
     )
 
     expect(screen.getByText('Ana Lima')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Dashboard' })).not.toHaveClass('active')
     expect(screen.getByRole('link', { name: 'Extrato' })).toHaveClass('active')
     expect(screen.getByRole('heading', { name: 'Extrato da conta' })).toBeInTheDocument()
   })
@@ -54,6 +55,8 @@ describe('AppShell', () => {
         </MemoryRouter>
       </AuthProvider>,
     )
+
+    expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveClass('active')
 
     await user.click(screen.getByRole('button', { name: 'Sair' }))
 
