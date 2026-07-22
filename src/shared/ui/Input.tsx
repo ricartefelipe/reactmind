@@ -1,16 +1,22 @@
-export function Input(props: {
+type Props = {
   label: string
   type?: string
   value: string
   onChange: (value: string) => void
-}) {
+  id?: string
+}
+
+export function Input({ label, type = 'text', value, onChange, id }: Props) {
+  const inputId = id ?? label
+
   return (
-    <label>
-      {props.label}
+    <label className="field" htmlFor={inputId}>
+      <span>{label}</span>
       <input
-        type={props.type}
-        value={props.value}
-        onChange={(event) => props.onChange(event.target.value)}
+        id={inputId}
+        type={type}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
       />
     </label>
   )

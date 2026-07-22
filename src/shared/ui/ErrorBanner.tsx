@@ -1,3 +1,7 @@
 export function ErrorBanner({ message }: { message: string }) {
-  return <div role="alert">{message}</div>
+  return (
+    <div className="error-banner" role="alert">
+      {message}
+    </div>
+  )
 }
