@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import { AppShell } from '@/app/layout/AppShell'
 import { LoginPage } from '@/features/auth/LoginPage'
 import { RequireAuth } from '@/features/auth/RequireAuth'
+import { BeneficiariesPage } from '@/features/beneficiaries/BeneficiariesPage'
 import { DashboardPage } from '@/features/wallet/DashboardPage'
 import { TransactionsPage } from '@/features/wallet/TransactionsPage'
 
@@ -17,7 +18,7 @@ export function AppRouter() {
         <Route element={<AppShell />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
-          <Route path="/beneficiaries" element={<Placeholder title="Favorecidos" />} />
+          <Route path="/beneficiaries" element={<BeneficiariesPage />} />
           <Route path="/transfers/pix" element={<Placeholder title="PIX" />} />
         </Route>
       </Route>
