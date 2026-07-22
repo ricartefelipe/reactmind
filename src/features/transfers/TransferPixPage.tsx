@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router'
 import { useBeneficiaries } from '@/features/beneficiaries/hooks'
@@ -62,6 +62,10 @@ export function TransferPixPage() {
     !beneficiaries.isPending &&
     !balance.isPending
 
+  useEffect(() => {
+    idempotencyKey.current = null
+  }, [beneficiaryId, amountCents])
+
   function handleContinue(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!canContinue) return
@@ -85,7 +89,6 @@ export function TransferPixPage() {
   }
 
   function handleBack() {
-    idempotencyKey.current = null
     createPix.reset()
     setStep('FORM')
   }
