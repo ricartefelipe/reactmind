@@ -71,6 +71,7 @@ p {
 
 .btn:focus-visible,
 .field input:focus-visible,
+.field select:focus-visible,
 .shell__nav a:focus-visible {
   outline: 3px solid rgb(49 87 213 / 25%);
   outline-offset: 2px;
@@ -83,7 +84,8 @@ p {
   font-weight: 600;
 }
 
-.field input {
+.field input,
+.field select {
   width: 100%;
   min-height: 2.75rem;
   padding: var(--space-1) var(--space-2);
@@ -220,6 +222,44 @@ p {
 }
 
 .wallet-shortcuts a {
+  text-decoration: none;
+}
+
+.transfer-form,
+.transfer-summary {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.transfer-summary div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.transfer-summary dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.transfer-summary dd {
+  margin: 0;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.transfer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.transfer-link {
+  justify-self: start;
   text-decoration: none;
 }
 
