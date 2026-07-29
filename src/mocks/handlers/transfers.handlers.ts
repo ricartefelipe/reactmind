@@ -10,7 +10,6 @@ export type ExecutePixInput = {
   idempotencyKey: string
 }
 
-/** Regra de negócio pura — testável sem rede (espelha PixService no Spring). */
 export function executePix(db: Db, input: ExecutePixInput): Transfer {
   const cached = db.idempotency.get(input.idempotencyKey)
   if (cached) return cached

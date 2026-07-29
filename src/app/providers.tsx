@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter } from 'react-router'
+import { HashRouter } from 'react-router'
 import type { ReactNode } from 'react'
 import { AuthProvider } from '@/features/auth/AuthContext'
 
@@ -11,7 +11,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>{children}</BrowserRouter>
+        <HashRouter>{children}</HashRouter>
       </AuthProvider>
     </QueryClientProvider>
   )

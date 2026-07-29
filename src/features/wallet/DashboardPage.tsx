@@ -1,21 +1,27 @@
 import { Link } from 'react-router'
 import { useBalance } from './hooks'
+import { useAuth } from '@/features/auth/AuthContext'
 import { ErrorBanner } from '@/shared/ui/ErrorBanner'
 import { LoadingBlock } from '@/shared/ui/LoadingBlock'
 import { formatCents } from '@/shared/utils/money'
 
 const shortcuts = [
-  { to: '/transactions', label: 'Extrato' },
-  { to: '/beneficiaries', label: 'Favorecidos' },
-  { to: '/transfers/pix', label: 'PIX' },
+  { to: '/transfers/pix', label: 'PIX', icon: '↗' },
+  { to: '/transactions', label: 'Extrato', icon: '≡' },
+  { to: '/beneficiaries', label: 'Favorecidos', icon: '◎' },
 ] as const
 
 export function DashboardPage() {
   const balance = useBalance()
+  const { user } = useAuth()
+  const firstName = user?.name?.split(' ')[0]
 
   return (
     <section className="wallet-page">
-      <h1>Dashboard</h1>
+      <div>
+        <p className="wallet-page__eyebrow">Olá{firstName ? `, ${firstName}` : ''}</p>
+        <h1>ReactMind</h1>
+      </div>
 
       <section className="balance-card" aria-labelledby="balance-title">
         <h2 id="balance-title">Saldo disponível</h2>
@@ -34,13 +40,19 @@ export function DashboardPage() {
         )}
       </section>
 
-      <nav className="wallet-shortcuts" aria-label="Atalhos">
-        {shortcuts.map((shortcut) => (
-          <Link className="btn" key={shortcut.to} to={shortcut.to}>
-            {shortcut.label}
-          </Link>
-        ))}
-      </nav>
+      <div>
+        <h2>Movimentar</h2>
+        <nav className="wallet-shortcuts" aria-label="Atalhos">
+          {shortcuts.map((shortcut) => (
+            <Link key={shortcut.to} to={shortcut.to}>
+              <span className="shortcut-icon" aria-hidden="true">
+                {shortcut.icon}
+              </span>
+              {shortcut.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
     </section>
   )
 }
