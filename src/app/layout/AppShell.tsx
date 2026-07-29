@@ -8,7 +8,10 @@ export function AppShell() {
   return (
     <div className="shell">
       <header className="shell__header">
-        <strong>ReactMind</strong>
+        <NavLink to="/" className="shell__brand" end>
+          <span className="shell__mark" aria-hidden="true" />
+          ReactMind
+        </NavLink>
         <span>{user?.name}</span>
         <Button type="button" onClick={logout}>
           Sair
@@ -16,11 +19,11 @@ export function AppShell() {
       </header>
       <nav className="shell__nav" aria-label="Navegação principal">
         <NavLink to="/" end>
-          Dashboard
+          Início
         </NavLink>
         <NavLink to="/transactions">Extrato</NavLink>
-        <NavLink to="/beneficiaries">Favorecidos</NavLink>
         <NavLink to="/transfers/pix">PIX</NavLink>
+        <NavLink to="/beneficiaries">Favorecidos</NavLink>
       </nav>
       <main className="shell__main">
         <Outlet />

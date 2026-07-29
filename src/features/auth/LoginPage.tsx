@@ -32,16 +32,22 @@ export function LoginPage() {
 
   return (
     <main className="login">
-      <h1>ReactMind</h1>
-      <p>Carteira digital de estudo</p>
-      {error && <ErrorBanner message={error} />}
-      <form onSubmit={onSubmit}>
-        <Input label="Email" type="email" value={email} onChange={setEmail} />
-        <Input label="Senha" type="password" value={password} onChange={setPassword} />
-        <Button type="submit" disabled={loading}>
-          {loading ? 'Entrando…' : 'Entrar'}
-        </Button>
-      </form>
+      <div className="login__brand">
+        <p className="login__eyebrow">Carteira digital</p>
+        <h1>ReactMind</h1>
+        <p>Sua carteira digital — saldo, PIX e favorecidos em um fluxo limpo.</p>
+      </div>
+      <div className="login__panel">
+        {error && <ErrorBanner message={error} />}
+        <form onSubmit={onSubmit}>
+          <Input label="Email" type="email" value={email} onChange={setEmail} />
+          <Input label="Senha" type="password" value={password} onChange={setPassword} />
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Entrando…' : 'Entrar na carteira'}
+          </Button>
+        </form>
+        <p>Demo: demo@vuemind.dev / demo123</p>
+      </div>
     </main>
   )
 }

@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.cursor/
+.superpowers/
+AGENTS.md
+PROMPT-EVOLUCAO.md
