@@ -11,7 +11,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>{children}</BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
+          {children}
+        </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>
   )
