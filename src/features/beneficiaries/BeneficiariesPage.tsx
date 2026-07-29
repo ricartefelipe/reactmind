@@ -59,10 +59,10 @@ export function BeneficiariesPage() {
       {beneficiaries.isError && (
         <ErrorBanner message="Não foi possível carregar os favorecidos." />
       )}
-      {beneficiaries.data?.items.length === 0 && (
+      {beneficiaries.data?.items?.length === 0 && (
         <EmptyState message="Nenhum favorecido cadastrado." />
       )}
-      {beneficiaries.data && beneficiaries.data.items.length > 0 && (
+      {beneficiaries.data?.items && beneficiaries.data.items.length > 0 && (
         <ul className="transaction-list">
           {beneficiaries.data.items.map((beneficiary) => (
             <li key={beneficiary.id}>
