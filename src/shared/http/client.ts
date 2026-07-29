@@ -2,7 +2,7 @@ import type { ApiErrorBody } from '@/shared/types/api'
 import { ApiError } from '@/shared/http/errors'
 import { createCorrelationId } from '@/shared/utils/id'
 
-const BASE = '/api/v1'
+const BASE = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}api/v1`
 
 let authTokenAccessor: () => string | null = () => null
 
