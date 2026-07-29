@@ -52,10 +52,10 @@ export function TransactionsPage() {
       {transactions.isError && (
         <ErrorBanner message="Não foi possível carregar o extrato." />
       )}
-      {transactions.data?.items.length === 0 && (
+      {transactions.data?.items?.length === 0 && (
         <EmptyState message="Nenhuma transação encontrada." />
       )}
-      {transactions.data && transactions.data.items.length > 0 && (
+      {transactions.data?.items && transactions.data.items.length > 0 && (
         <ul className="transaction-list">
           {transactions.data.items.map((transaction) => (
             <li key={transaction.id}>
