@@ -20,6 +20,8 @@
   --login-ink: #0a2540;
   --login-mist: #123e6b;
   --login-gold: #61dafb;
+  --hero-deep: #061a33;
+  --cta-end: #0854a1;
   --space-1: 0.5rem;
   --space-2: 0.75rem;
   --space-3: 1rem;
@@ -184,8 +186,7 @@ h2 {
   inset: -20%;
   background:
     radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--login-gold) 28%, transparent), transparent 42%),
-    radial-gradient(circle at 15% 80%, color-mix(in srgb, #5ec4b0 22%, transparent), transparent 45%);
-  animation: mind-shimmer 7s ease-in-out infinite;
+    radial-gradient(circle at 15% 80%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 45%);
   pointer-events: none;
 }
 
@@ -197,12 +198,10 @@ h2 {
   flex-direction: column;
   justify-content: center;
   padding: clamp(2rem, 6vw, 5rem);
-  animation: mind-rise 320ms var(--ease) both;
 }
 
 .login__panel {
-  animation-delay: 80ms;
-  background: color-mix(in srgb, #04110e 55%, transparent);
+  background: color-mix(in srgb, var(--login-ink) 55%, transparent);
   border-left: 1px solid color-mix(in srgb, var(--login-gold) 28%, transparent);
   backdrop-filter: blur(18px);
 }
@@ -247,15 +246,16 @@ h2 {
 }
 
 .login .field input {
-  background: color-mix(in srgb, #0a1f1b 70%, transparent);
+  background: color-mix(in srgb, var(--login-ink) 70%, transparent);
   border-color: color-mix(in srgb, var(--login-gold) 35%, transparent);
   color: #f7faf8;
 }
 
 .login .btn {
-  background: linear-gradient(135deg, var(--login-gold), #b8923f);
-  color: #10241f;
-  box-shadow: 0 0 0 1px rgba(196, 163, 90, 0.25), 0 18px 50px rgba(15, 61, 54, 0.18);
+  background: linear-gradient(135deg, var(--login-gold), var(--cta-end));
+  color: #061a33;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--login-gold) 35%, transparent),
+    0 18px 50px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 .shell {
@@ -275,7 +275,6 @@ h2 {
   border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   background: color-mix(in srgb, var(--surface-elevated) 86%, transparent);
   backdrop-filter: blur(14px);
-  animation: mind-rise 320ms var(--ease) both;
 }
 
 .shell__brand {
@@ -289,9 +288,10 @@ h2 {
 }
 
 .shell__mark {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  transform: rotate(45deg);
   background: linear-gradient(135deg, var(--gold), var(--accent));
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent);
 }
@@ -338,7 +338,6 @@ h2 {
 .wallet-page {
   display: grid;
   gap: var(--space-4);
-  animation: mind-rise 320ms var(--ease) both;
 }
 
 .wallet-page h1 {
@@ -362,9 +361,10 @@ h2 {
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: none;
   border-radius: 22px;
-  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-hover) 55%, #0a2e28 100%);
+  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-hover) 55%, var(--hero-deep) 100%);
   color: #f4faf7;
-  box-shadow: 0 0 0 1px rgba(196, 163, 90, 0.25), 0 18px 50px rgba(15, 61, 54, 0.18);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent),
+    0 18px 50px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 .balance-card::after {
@@ -376,7 +376,6 @@ h2 {
   top: -60px;
   border-radius: 50%;
   background: radial-gradient(circle, color-mix(in srgb, var(--gold) 55%, transparent), transparent 68%);
-  animation: mind-shimmer 5.5s ease-in-out infinite;
 }
 
 .balance-card h2 {
@@ -419,7 +418,7 @@ h2 {
   text-decoration: none;
   font-weight: 600;
   font-size: 0.875rem;
-  box-shadow: 0 1px 2px rgba(8, 40, 34, 0.06);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--accent) 10%, transparent);
   transition: transform 180ms var(--ease), box-shadow 180ms var(--ease);
 }
 
@@ -452,7 +451,7 @@ h2 {
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--surface-elevated);
-  box-shadow: 0 1px 2px rgba(8, 40, 34, 0.06);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .transfer-summary div {

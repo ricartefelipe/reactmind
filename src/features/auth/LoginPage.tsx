@@ -33,7 +33,7 @@ export function LoginPage() {
   return (
     <main className="login">
       <div className="login__brand">
-        <p className="login__eyebrow">Carteira digital</p>
+        <p className="login__eyebrow">React · Carteira</p>
         <h1>ReactMind</h1>
         <p>Sua carteira digital — saldo, PIX e favorecidos em um fluxo limpo.</p>
       </div>
