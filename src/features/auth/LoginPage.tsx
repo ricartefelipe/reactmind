@@ -9,8 +9,8 @@ import { useAuth } from './AuthContext'
 export function LoginPage() {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
-  const [email, setEmail] = useState('demo@vuemind.dev')
-  const [password, setPassword] = useState('demo123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -46,7 +46,6 @@ export function LoginPage() {
             {loading ? 'Entrando…' : 'Entrar na carteira'}
           </Button>
         </form>
-        <p>Demo: demo@vuemind.dev / demo123</p>
       </div>
     </main>
   )
