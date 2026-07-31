@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:pages": "VITE_BASE=/reactmind/ VITE_ENABLE_MSW=true tsc -b && VITE_BASE=/reactmind/ VITE_ENABLE_MSW=true vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
