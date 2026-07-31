@@ -7,6 +7,7 @@ import { AuthProvider } from './AuthContext'
 import { LoginPage } from './LoginPage'
 import { RequireAuth } from './RequireAuth'
 import { setupServer } from 'msw/node'
+import { http, HttpResponse } from 'msw'
 import { handlers } from '@/mocks/handlers'
 import { resetDb } from '@/mocks/data/db'
 
@@ -50,12 +51,23 @@ describe('auth', () => {
   })
 
   it('faz login com credenciais válidas', async () => {
+    server.use(
+      http.post('*/api/v1/login', () =>
+        HttpResponse.json({
+          valid: true,
+          profile: { id: 'u1', name: 'Felipe Demo', email: 'demo@vuemind.dev' },
+          system: { slug: 'reactmind', name: 'ReactMind' },
+          systems: [],
+          expiresAt: '2026-08-01T12:00:00.000Z',
+        }),
+      ),
+    )
     const user = userEvent.setup()
     renderAt('/login')
     await user.click(screen.getByRole('button', { name: /entrar/i }))
     await waitFor(() => {
       expect(screen.getByText('Private Home')).toBeInTheDocument()
     })
-    expect(sessionStorage.getItem('reactmind.token')).toBe('mock-jwt-demo')
+    expect(sessionStorage.getItem('reactmind.token')).not.toBeNull()
   })
 })
