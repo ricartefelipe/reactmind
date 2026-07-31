@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { loginTotalRecall, totalRecallBaseUrl } from './totalrecall'
+import { loginTotalRecall, totalRecallSession, totalRecallBaseUrl } from './totalrecall'
 
 describe('totalRecallBaseUrl', () => {
   afterEach(() => {
@@ -60,5 +60,20 @@ describe('loginTotalRecall', () => {
 
     const result = await loginTotalRecall('demo@vuemind.dev', 'demo123', 'reactmind', 1000)
     expect(result).toEqual({ valid: false, reason: 'invalid_credentials' })
+  })
+
+  it('cria uma sessão local com os dados do perfil autorizado', () => {
+    expect(
+      totalRecallSession({
+        valid: true,
+        profile: { id: 'profile-1', name: 'Felipe', email: 'felipe@example.com' },
+        system: { slug: 'reactmind', name: 'ReactMind' },
+        systems: [],
+        expiresAt: '2026-08-01T12:00:00.000Z',
+      }),
+    ).toEqual({
+      accessToken: 'totalrecall:profile-1',
+      user: { id: 'profile-1', name: 'Felipe', email: 'felipe@example.com' },
+    })
   })
 })
