@@ -3,50 +3,47 @@ import { loginRequest } from './api'
 
 describe('loginRequest', () => {
   afterEach(() => {
-    vi.unstubAllEnvs()
     vi.unstubAllGlobals()
   })
 
-  it('valida no TotalRecall em modo remoto e cria a sessão local', async () => {
-    vi.stubEnv('VITE_ENABLE_MSW', 'false')
+  it('autentica via API nativa /auth/login', async () => {
     const fetch = vi.fn(async () => ({
+      ok: true,
       json: async () => ({
-        valid: true,
-        profile: { id: 'profile-1', name: 'Felipe', email: 'felipe@example.com' },
-        system: { slug: 'reactmind', name: 'ReactMind' },
-        systems: [],
-        expiresAt: '2026-08-01T12:00:00.000Z',
+        accessToken: 'mock-jwt-demo',
+        user: { id: 'u1', name: 'Felipe Demo', email: 'demo@vuemind.dev' },
       }),
     }))
     vi.stubGlobal('fetch', fetch)
 
-    await expect(loginRequest('felipe@example.com', 'senha')).resolves.toEqual({
-      accessToken: 'totalrecall:profile-1',
-      user: { id: 'profile-1', name: 'Felipe', email: 'felipe@example.com' },
+    await expect(loginRequest('demo@vuemind.dev', 'demo123')).resolves.toEqual({
+      accessToken: 'mock-jwt-demo',
+      user: { id: 'u1', name: 'Felipe Demo', email: 'demo@vuemind.dev' },
     })
     expect(fetch).toHaveBeenCalledWith(
-      expect.stringMatching(/\/api\/v1\/login$/),
+      expect.stringMatching(/\/auth\/login$/),
       expect.objectContaining({
         method: 'POST',
-        body: JSON.stringify({
-          email: 'felipe@example.com',
-          password: 'senha',
-          system: 'reactmind',
-        }),
+        body: JSON.stringify({ email: 'demo@vuemind.dev', password: 'demo123' }),
       }),
     )
   })
 
-  it('expõe erro claro quando TotalRecall rejeita a senha', async () => {
-    vi.stubEnv('VITE_ENABLE_MSW', 'false')
+  it('propaga erro de credenciais inválidas', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn(async () => ({
-        json: async () => ({ valid: false, reason: 'invalid_credentials' }),
+        ok: false,
+        status: 401,
+        json: async () => ({
+          code: 'INVALID_CREDENTIALS',
+          message: 'Email ou senha inválidos.',
+          correlationId: 'c1',
+        }),
       })),
     )
 
-    await expect(loginRequest('felipe@example.com', 'incorreta')).rejects.toMatchObject({
+    await expect(loginRequest('demo@vuemind.dev', 'incorreta')).rejects.toMatchObject({
       status: 401,
       message: 'Email ou senha inválidos.',
     })
