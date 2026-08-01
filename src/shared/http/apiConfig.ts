@@ -18,13 +18,6 @@ export function shouldEnableMsw(): boolean {
   return import.meta.env.DEV || import.meta.env.BASE_URL !== '/'
 }
 
-export function shouldUseTotalRecallLogin(): boolean {
-  return (
-    import.meta.env.VITE_ENABLE_MSW === 'false' ||
-    Boolean((import.meta.env.VITE_TOTALRECALL_URL as string | undefined)?.trim())
-  )
-}
-
 export function defaultRemoteApiBaseUrl(): string {
   return DEFAULT_REMOTE_API
 }
