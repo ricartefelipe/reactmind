@@ -1,6 +1,5 @@
 import { createCorrelationId } from '@/shared/utils/id'
 import type { ApiErrorBody } from '@/shared/types/api'
-import { loginTotalRecall } from '@/shared/totalrecall'
 import { HttpResponse, http } from 'msw'
 import { getDb } from '../data/db'
 
@@ -14,18 +13,6 @@ export const authHandlers = [
       password: string
     }
     const db = getDb()
-
-    const tr = await loginTotalRecall(email, password, 'reactmind')
-    if (tr?.valid) {
-      return HttpResponse.json({
-        accessToken: MOCK_TOKEN,
-        user: {
-          id: db.user.id,
-          name: tr.profile.name || db.user.name,
-          email: tr.profile.email,
-        },
-      })
-    }
 
     if (email !== db.user.email || password !== db.user.password) {
       const error: ApiErrorBody = {
