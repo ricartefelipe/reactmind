@@ -2,44 +2,45 @@
 
 ## Como falar do projeto em 60s
 
-> “Montei uma carteira digital em React 19 + TypeScript: login com guard, saldo/extrato, favorecidos e PIX. A API é mockada com MSW no mesmo contrato `/api/v1` que depois pluga no Spring. Usei TanStack Query para server state, Context só para auth, React Router com `RequireAuth`, client `fetch` tipado e testes Vitest.”
+> “Montei uma carteira digital Mind Wallet 2.0 em React 19 + TypeScript: login com guard, saldo com limite diário, extrato paginado, favorecidos com tipo de chave PIX, PIX com agendamento/QR/idempotência, notificações e onboarding. A API é mockada com MSW do pacote mind-shared no contrato `/api/v1`. Usei TanStack Query para server state, Context só para auth, React Router com `RequireAuth`, client `fetch` tipado, i18n/tema e smoke Playwright.”
 
 ## Conceitos que costumam cair
 
-1. **TanStack Query** — cache de saldo/extrato/favorecidos; `useQuery`/`useMutation`; invalidação após PIX ou CRUD (`walletKeys`, `beneficiaryKeys`); loading/error automáticos.
+1. **TanStack Query** — cache de saldo/extrato/favorecidos/notificações/onboarding; `useQuery`/`useInfiniteQuery`/`useMutation`; invalidação após PIX ou CRUD.
 2. **AuthContext** — token e usuário em `sessionStorage` (`reactmind.token`); `login`/`logout`; registra accessor no `shared/http` para Bearer.
-3. **RequireAuth** — wrapper de rota que lê `isAuthenticated` e redireciona para `/login` com `state.from`.
-4. **`shared/http`** — um client (`fetch`) centraliza Bearer, `X-Correlation-Id`, parse de `ApiError` e `Idempotency-Key` opcional; features só importam `http.get`/`http.post`.
-5. **`executePix`** — regra de domínio pura no mock (`src/mocks/handlers/transfers.handlers.ts`): valida saldo, idempotência e atualiza extrato; testável sem rede.
+3. **RequireAuth** — wrapper de rota que lê `isAuthenticated` e redireciona para `/login`.
+4. **`shared/http`** — um client (`fetch`) centraliza Bearer, `X-Correlation-Id`, parse de `ApiError` e `Idempotency-Key` opcional.
+5. **mind-shared MSW** — `createMindHandlers` cobre balance/limits, PIX agendado, notificações e onboarding; validação de chave via `pixKey`.
 6. **Dinheiro em centavos** — evita float; formata na UI com `Intl`.
-7. **Idempotency-Key** — no confirm do PIX (não a cada keystroke); gerada na mutation e reutilizada em retry.
-8. **Estados de UI** — loading / error / empty / success (extrato, favorecidos, PIX).
+7. **Idempotency-Key** — gerada ao entrar no confirm do PIX; retry reutiliza a mesma chave.
+8. **Estados de UI** — loading / error / empty / success (extrato, favorecidos, PIX, notificações).
 
 ## Fluxo demo ao vivo (2–3 min)
 
 1. Login com `demo@vuemind.dev` / `demo123`
-2. Ver saldo no dashboard
-3. Abrir Extrato (filtrar tipo)
-4. Favorecidos → adicionar um
-5. PIX → escolher favorecido → valor → confirmar → comprovante
-6. Voltar ao Extrato / saldo (saldo caiu)
+2. Ver saldo, bloqueado e barra de limite no dashboard + checklist
+3. Abrir Extrato (busca “mercado”, carregar mais)
+4. Favorecidos → adicionar com tipo EMAIL
+5. PIX → favorecido → valor → enviar agora → confirmar → comprovante
+6. Notificações → marcar lida / marcar todas
+7. Ajustes → tema e idioma
 
 ## Perguntas prontas (respostas curtas)
 
 **Por que MSW e não json-server?**  
-Mesma camada `fetch`/client que a API real; handlers no mesmo repo; fácil nos testes.
+Mesma camada `fetch`/client que a API real; handlers compartilhados com a trilha Mind; fácil nos testes.
 
 **Por que feature-first?**  
 Cada domínio (auth, wallet, transfers) fica isolado — espelha microsserviços e facilita Vue/Angular no mesmo contrato.
 
 **Como liga o Spring depois?**  
-Comenta `worker.start` em `main.tsx`, usa proxy `/api/v1` → `http://localhost:8080` no Vite, mantém OpenAPI.
+`VITE_ENABLE_MSW=false` + `VITE_API_BASE_URL` apontando para o Spring HTTPS, mantém OpenAPI.
 
 **Query vs Context para tudo?**  
-Context só para sessão (auth); dados da API ficam no Query — evita re-render global e duplica estado do servidor.
+Context só para sessão (auth) e preferências locais (tema/idioma); dados da API ficam no Query.
 
 **O que testa?**  
-Utils de dinheiro, auth (login/guard), regra `validatePixAmount`/`executePix` (saldo insuficiente) e smoke da página PIX.
+Utils de dinheiro, validação PIX/limite, auth, smoke das páginas e e2e Playwright do fluxo completo.
 
 ## Arquivos “abra na entrevista”
 
@@ -47,7 +48,7 @@ Utils de dinheiro, auth (login/guard), regra `validatePixAmount`/`executePix` (s
 - `src/features/auth/AuthContext.tsx`
 - `src/features/auth/RequireAuth.tsx`
 - `src/app/router.tsx`
-- `src/mocks/handlers/transfers.handlers.ts` (`executePix`)
+- `src/mocks/handlers/index.ts`
 - `src/features/transfers/TransferPixPage.tsx`
 
 ## React vs Vue vs Angular (mesmo domínio)
@@ -58,7 +59,3 @@ Utils de dinheiro, auth (login/guard), regra `validatePixAmount`/`executePix` (s
 | Sessão / auth | Pinia `authStore` | `AuthService` + signals | `AuthContext` + `sessionStorage` |
 | Guard de rota | `meta.requiresAuth` | `CanActivateFn` | `RequireAuth` + `<Outlet />` |
 | HTTP | `shared/http` (fetch) | `HttpInterceptorFn` | `shared/http` (fetch) |
-| Lógica reutilizável | composables | métodos do service | hooks (`useWallet`, `usePixTransfer`) |
-| Mock / contrato | MSW `/api/v1` | MSW `/api/v1` | MSW `/api/v1` |
-| PIX idempotente | header no confirm | header no confirm | header no confirm |
-| Dinheiro | centavos + `Intl` | centavos + `Intl` | centavos + `Intl` |
