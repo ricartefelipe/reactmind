@@ -1,11 +1,12 @@
 import { http } from '@/shared/http/client'
+import { normalizeBalance, normalizeTransactionsPage } from './normalize'
 import type { Balance, TransactionFilters, TransactionsPage } from './types'
 
-export function fetchBalance() {
-  return http.get<Balance>('/wallet/balance')
+export async function fetchBalance() {
+  return normalizeBalance(await http.get<Partial<Balance>>('/wallet/balance'))
 }
 
-export function fetchTransactions(filters: TransactionFilters = {}) {
+export async function fetchTransactions(filters: TransactionFilters = {}) {
   const params = new URLSearchParams()
   if (filters.from) params.set('from', filters.from)
   if (filters.to) params.set('to', filters.to)
@@ -14,7 +15,8 @@ export function fetchTransactions(filters: TransactionFilters = {}) {
   if (filters.page !== undefined) params.set('page', String(filters.page))
   if (filters.pageSize !== undefined) params.set('pageSize', String(filters.pageSize))
   const query = params.toString()
-  return http.get<TransactionsPage>(
+  const raw = await http.get<Partial<TransactionsPage>>(
     `/wallet/transactions${query ? `?${query}` : ''}`,
   )
+  return normalizeTransactionsPage(raw, filters.page ?? 1, filters.pageSize ?? 20)
 }
