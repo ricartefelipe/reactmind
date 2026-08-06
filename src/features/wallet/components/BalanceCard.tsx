@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { formatCents } from '@/shared/utils/money'
+import { formatCents, toCents } from '@/shared/utils/money'
 
 type Props = {
   availableCents: number
@@ -22,10 +22,10 @@ export function BalanceCard({
   const blocked = formatCents(blockedCents, locale, currency)
   const spent = formatCents(dailySpentCents, locale, currency)
   const limit = formatCents(dailyLimitCents, locale, currency)
+  const safeLimit = toCents(dailyLimitCents)
+  const safeSpent = toCents(dailySpentCents)
   const limitPercent =
-    dailyLimitCents <= 0
-      ? 0
-      : Math.min(100, Math.round((dailySpentCents / dailyLimitCents) * 100))
+    safeLimit <= 0 ? 0 : Math.min(100, Math.round((safeSpent / safeLimit) * 100))
 
   return (
     <div className="balance-card" data-testid="balance-card">
