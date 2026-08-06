@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
@@ -61,7 +62,7 @@ describe('AppShell', () => {
   it('exibe usuário, navegação e badge de notificações', async () => {
     renderShell()
 
-    expect(screen.getByText('Ana Lima')).toBeInTheDocument()
+    expect(screen.getByTestId('shell-user')).toHaveTextContent('Ana Lima')
     expect(screen.getByRole('link', { name: 'Início' })).not.toHaveClass(
       'active',
     )
@@ -70,5 +71,17 @@ describe('AppShell', () => {
       screen.getByRole('heading', { name: 'Extrato da conta' }),
     ).toBeInTheDocument()
     expect(await screen.findByTestId('notifications-badge')).toBeInTheDocument()
+  })
+
+  it('abre menu da conta com perfil, ajustes e sair', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    await user.click(screen.getByTestId('shell-user'))
+
+    expect(screen.getByTestId('shell-user-menu')).toBeInTheDocument()
+    expect(screen.getByText('ana@example.com')).toBeInTheDocument()
+    expect(screen.getByTestId('shell-account-settings')).toBeInTheDocument()
+    expect(screen.getByTestId('shell-logout')).toBeInTheDocument()
   })
 })
