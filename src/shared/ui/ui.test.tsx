@@ -41,7 +41,7 @@ describe('shared UI', () => {
       import('./EmptyState'),
     ])
 
-    render(
+    const { container } = render(
       <>
         <LoadingBlock />
         <EmptyState message="Nenhum lançamento." />
@@ -49,6 +49,8 @@ describe('shared UI', () => {
     )
 
     expect(screen.getByRole('status')).toHaveTextContent('Carregando…')
-    expect(screen.getByText('Nenhum lançamento.')).toHaveClass('empty')
+    expect(container.querySelector('.empty')).toHaveTextContent(
+      'Nenhum lançamento.',
+    )
   })
 })

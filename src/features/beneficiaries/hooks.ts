@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { onboardingKeys } from '@/features/onboarding/hooks'
 import {
   createBeneficiary,
   deleteBeneficiary,
@@ -21,8 +22,12 @@ export function useCreateBeneficiary() {
 
   return useMutation({
     mutationFn: createBeneficiary,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: beneficiaryKeys.all }),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: beneficiaryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: onboardingKeys.all }),
+      ])
+    },
   })
 }
 

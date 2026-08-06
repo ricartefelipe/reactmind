@@ -13,4 +13,10 @@ describe('validatePixAmount', () => {
   it('rejeita saldo insuficiente', () => {
     expect(validatePixAmount(300_000, 250_000)).toBe('INSUFFICIENT_FUNDS')
   })
+
+  it('rejeita limite diário excedido', () => {
+    expect(validatePixAmount(20_000, 250_000, 100_000, 90_000)).toBe(
+      'DAILY_LIMIT_EXCEEDED',
+    )
+  })
 })

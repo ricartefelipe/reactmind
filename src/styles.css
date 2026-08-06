@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap');
 
-:root {
+:root,
+html[data-theme='light'] {
   --font-ui: 'Sora', system-ui, sans-serif;
   --font-display: 'Instrument Serif', Georgia, serif;
   --bg: #eef4fb;
@@ -17,6 +18,7 @@
   --gold-soft: #daf3fb;
   --danger: #b33a32;
   --danger-bg: #f6dfdb;
+  --success: #1f8a55;
   --login-ink: #0a2540;
   --login-mist: #123e6b;
   --login-gold: #61dafb;
@@ -35,6 +37,25 @@
   font-family: var(--font-ui);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+html[data-theme='dark'] {
+  --bg: #0f1724;
+  --bg-deep: #152033;
+  --surface: #162235;
+  --surface-elevated: #1c2b42;
+  --fg: #e8f0fa;
+  --muted: #9bb0c9;
+  --border: #314862;
+  --accent: #3d8fdb;
+  --accent-hover: #62a8e8;
+  --accent-soft: #24374f;
+  --gold: #61dafb;
+  --gold-soft: #1d3648;
+  --danger: #f0a29b;
+  --danger-bg: #3a2220;
+  --success: #58c48a;
+  --hero-deep: #06101c;
 }
 
 * {
@@ -109,7 +130,26 @@ h2 {
   background: var(--accent);
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition: transform 180ms var(--ease), background 180ms var(--ease);
+}
+
+.btn--primary {
+  color: #f4faf7;
+  background: var(--accent);
+}
+
+.btn--secondary {
+  color: var(--fg);
+  background: var(--surface-elevated);
+  border-color: var(--border);
+}
+
+.btn--ghost {
+  color: var(--accent-hover);
+  background: transparent;
+  min-height: 2rem;
+  padding-inline: var(--space-2);
 }
 
 .btn:hover:not(:disabled) {
@@ -117,9 +157,45 @@ h2 {
   transform: translateY(-1px);
 }
 
+.btn--secondary:hover:not(:disabled),
+.btn--ghost:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
 .btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.field__error {
+  color: var(--danger);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.error-banner__message {
+  margin: 0;
+}
+
+.error-banner__correlation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: 0.8125rem;
+}
+
+.skeleton {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.skeleton__line {
+  height: 0.9rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 70%, var(--surface));
+  animation: mind-shimmer 1.4s ease-in-out infinite;
 }
 
 .btn:focus-visible,
@@ -277,6 +353,50 @@ h2 {
   backdrop-filter: blur(14px);
 }
 
+.shell__user {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shell__avatar {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.shell__username {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.shell__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.35rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.shell__link--badge {
+  display: inline-flex;
+  align-items: center;
+}
+
 .shell__brand {
   display: inline-flex;
   align-items: center;
@@ -304,10 +424,10 @@ h2 {
 .shell__nav {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   gap: 0.35rem;
-  padding: var(--space-2) max(var(--space-4), calc((100vw - 56rem) / 2));
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  flex: 1;
 }
 
 .shell__nav a {
@@ -378,10 +498,17 @@ h2 {
   background: radial-gradient(circle, color-mix(in srgb, var(--gold) 55%, transparent), transparent 68%);
 }
 
-.balance-card h2 {
+.balance-card__primary,
+.balance-card__meta,
+.balance-card__limit {
   position: relative;
   z-index: 1;
-  margin-bottom: 0;
+}
+
+.balance-card__label,
+.balance-card__meta-label {
+  display: block;
+  margin-bottom: 0.35rem;
   color: color-mix(in srgb, var(--gold) 80%, white);
   font-family: var(--font-ui);
   font-size: 0.8125rem;
@@ -391,12 +518,85 @@ h2 {
 }
 
 .balance-card__value {
-  position: relative;
-  z-index: 1;
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 7vw, 3.6rem);
   letter-spacing: -0.03em;
   line-height: 1;
+}
+
+.balance-card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  font-size: 0.875rem;
+}
+
+.balance-card__limit-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.balance-card__track {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, white 22%, transparent);
+  overflow: hidden;
+}
+
+.balance-card__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold), white);
+}
+
+.onboarding {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface-elevated);
+}
+
+.onboarding__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.onboarding__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.onboarding__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.onboarding__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.onboarding__item--done {
+  color: var(--success);
+}
+
+.onboarding__check {
+  width: 1.25rem;
+  text-align: center;
+  font-weight: 700;
 }
 
 .wallet-shortcuts {
@@ -481,29 +681,110 @@ h2 {
   text-decoration: none;
 }
 
-.transactions-header {
+.transactions-filters {
   display: flex;
+  flex-wrap: wrap;
   align-items: end;
-  justify-content: space-between;
   gap: var(--space-3);
 }
 
-.transaction-filter {
-  display: grid;
-  gap: 0.25rem;
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 600;
+.transactions-filters__grow {
+  flex: 1;
+  min-width: 180px;
 }
 
-.transaction-filter select {
-  min-width: 10rem;
-  min-height: 2.5rem;
-  padding: var(--space-1) var(--space-2);
+.transfer-step,
+.transfer-qr,
+.beneficiary-form,
+.settings-group {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--fg);
+  border-radius: 18px;
   background: var(--surface-elevated);
+}
+
+.transfer-step__or,
+.transfer-step__error {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.transfer-step__error {
+  color: var(--danger);
+}
+
+.transfer-qr {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--accent-soft) 45%, var(--surface));
+}
+
+.transfer-qr__result {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.notifications-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notifications-list__item {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.notifications-list__item--unread {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent-soft) 55%, var(--surface));
+}
+
+.notifications-list__item p {
+  margin: 0.35rem 0;
+}
+
+.notifications-list__item time {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.settings-group legend {
+  padding: 0 var(--space-2);
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.transaction-list__credit {
+  color: var(--success);
+}
+
+.transaction-list__debit {
+  color: var(--danger);
 }
 
 .transaction-list {

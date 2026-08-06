@@ -1,40 +1,32 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
-import { MemoryRouter } from 'react-router'
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
-import { handlers } from '@/mocks/handlers'
-import { resetDb } from '@/mocks/data/db'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest'
+import { createAppHandlers } from '@/mocks/handlers'
+import { renderWithProviders } from '@/test/render'
 import { DashboardPage } from './DashboardPage'
 import { TransactionsPage } from './TransactionsPage'
 
-const server = setupServer(...handlers)
+const server = setupServer(...createAppHandlers())
 
 beforeAll(() => server.listen())
+beforeEach(() => {
+  server.resetHandlers(...createAppHandlers())
+})
 afterEach(() => {
   server.resetHandlers()
-  resetDb()
 })
 afterAll(() => server.close())
 
-function renderPage(page: React.ReactNode) {
-  const client = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  })
-
-  return render(
-    <QueryClientProvider client={client}>
-      <MemoryRouter>{page}</MemoryRouter>
-    </QueryClientProvider>,
-  )
-}
-
 describe('wallet', () => {
-  it('exibe o saldo disponível e os atalhos no dashboard', async () => {
-    renderPage(<DashboardPage />)
+  it('exibe saldo, limite e atalhos no dashboard', async () => {
+    renderWithProviders(<DashboardPage />)
 
-    expect(await screen.findByText('R$ 2.500,00')).toBeInTheDocument()
+    expect(await screen.findByTestId('available-balance')).toHaveTextContent(
+      'R$',
+    )
+    expect(screen.getByTestId('daily-limit-bar')).toBeInTheDocument()
+    expect(screen.getByTestId('onboarding-checklist')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Extrato' })).toHaveAttribute(
       'href',
       '/transactions',
@@ -49,17 +41,23 @@ describe('wallet', () => {
     )
   })
 
-  it('lista transações e filtra por tipo', async () => {
+  it('lista transações e filtra por busca', async () => {
     const user = userEvent.setup()
-    renderPage(<TransactionsPage />)
+    renderWithProviders(<TransactionsPage />)
 
-    expect(await screen.findByText('Carlos')).toBeInTheDocument()
-    expect(screen.getByText('R$ 500,00')).toBeInTheDocument()
+    expect(await screen.findByTestId('transactions-list')).toHaveTextContent(
+      'Carlos',
+    )
 
-    await user.selectOptions(screen.getByLabelText('Tipo'), 'PIX_OUT')
+    await user.clear(screen.getByTestId('transactions-search'))
+    await user.type(screen.getByTestId('transactions-search'), 'mercado')
+    await user.click(screen.getByRole('button', { name: 'Filtrar' }))
 
-    expect(
-      await screen.findByText('Nenhuma transação encontrada.'),
-    ).toBeInTheDocument()
+    expect(await screen.findByTestId('transactions-list')).toHaveTextContent(
+      'Mercado Central',
+    )
+    expect(screen.getByTestId('transactions-list')).toHaveTextContent(
+      'Pagamento mercado',
+    )
   })
 })

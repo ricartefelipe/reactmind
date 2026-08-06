@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { ApiError } from '@/shared/http/errors'
 import { Button } from '@/shared/ui/Button'
 import { ErrorBanner } from '@/shared/ui/ErrorBanner'
@@ -7,6 +8,7 @@ import { Input } from '@/shared/ui/Input'
 import { useAuth } from './AuthContext'
 
 export function LoginPage() {
+  const { t } = useTranslation()
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -23,8 +25,8 @@ export function LoginPage() {
     try {
       await login(email, password)
       navigate('/', { replace: true })
-    } catch (error) {
-      setError(error instanceof ApiError ? error.message : 'Falha no login.')
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : t('common.error'))
     } finally {
       setLoading(false)
     }
@@ -34,16 +36,26 @@ export function LoginPage() {
     <main className="login">
       <div className="login__brand">
         <p className="login__eyebrow">React · Carteira</p>
-        <h1>ReactMind</h1>
-        <p>Sua carteira digital — saldo, PIX e favorecidos em um fluxo limpo.</p>
+        <h1>{t('login.title')}</h1>
+        <p>{t('login.subtitle')}</p>
       </div>
       <div className="login__panel">
         {error && <ErrorBanner message={error} />}
         <form onSubmit={onSubmit}>
-          <Input label="Email" type="email" value={email} onChange={setEmail} />
-          <Input label="Senha" type="password" value={password} onChange={setPassword} />
+          <Input
+            label={t('login.email')}
+            type="email"
+            value={email}
+            onChange={setEmail}
+          />
+          <Input
+            label={t('login.password')}
+            type="password"
+            value={password}
+            onChange={setPassword}
+          />
           <Button type="submit" disabled={loading}>
-            {loading ? 'Entrando…' : 'Entrar na carteira'}
+            {loading ? t('login.submitting') : t('login.submit')}
           </Button>
         </form>
       </div>
