@@ -1,8 +1,21 @@
-import type { ButtonHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
-export function Button({ children, ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
+type Variant = 'primary' | 'secondary' | 'ghost'
+
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: Variant
+  children: ReactNode
+}
+
+export function Button({
+  children,
+  variant = 'primary',
+  className,
+  ...rest
+}: Props) {
+  const classes = ['btn', `btn--${variant}`, className].filter(Boolean).join(' ')
   return (
-    <button className="btn" {...rest}>
+    <button className={classes} {...rest}>
       {children}
     </button>
   )
