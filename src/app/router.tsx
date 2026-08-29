@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import { AppShell } from '@/app/layout/AppShell'
 import { LoginPage } from '@/features/auth/LoginPage'
 import { RequireAuth } from '@/features/auth/RequireAuth'
+import { ArchivePage } from '@/features/archive/ArchivePage'
 import { BeneficiariesPage } from '@/features/beneficiaries/BeneficiariesPage'
 import { NotificationsPage } from '@/features/notifications/NotificationsPage'
 import { SettingsPage } from '@/features/settings/SettingsPage'
@@ -20,6 +21,7 @@ export function AppRouter() {
           <Route path="/beneficiaries" element={<BeneficiariesPage />} />
           <Route path="/transfers/pix" element={<TransferPixPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/arquivo" element={<ArchivePage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
