@@ -1,6 +1,6 @@
-type Props = {
+type Props = Readonly<{
   lines?: number
-}
+}>
 
 export function Skeleton({ lines = 3 }: Props) {
   return (

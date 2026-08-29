@@ -140,7 +140,7 @@ export function TransferPixPage() {
 
       {step === 'schedule' && (
         <TransferScheduleStep
-          onSkip={() => goToConfirm(undefined)}
+          onSkip={() => goToConfirm()}
           onSubmit={(iso) => goToConfirm(iso)}
           onBack={() => setStep('amount')}
         />

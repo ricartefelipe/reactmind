@@ -1,4 +1,4 @@
-type Props = {
+type Props = Readonly<{
   label: string
   type?: string
   value: string
@@ -6,7 +6,7 @@ type Props = {
   id?: string
   error?: string
   disabled?: boolean
-}
+}>
 
 export function Input({
   label,

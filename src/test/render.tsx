@@ -21,7 +21,7 @@ export function renderWithProviders(
   const client = createTestQueryClient()
   const route = options?.route ?? '/'
 
-  function Wrapper({ children }: { children: ReactNode }) {
+  function Wrapper({ children }: Readonly<{ children: ReactNode }>) {
     return (
       <QueryClientProvider client={client}>
         <SettingsProvider>

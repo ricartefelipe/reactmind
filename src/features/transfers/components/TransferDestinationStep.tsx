@@ -8,9 +8,9 @@ import type { PixDestination } from '../types'
 
 const pixKeyTypes: PixKeyType[] = ['EMAIL', 'CPF', 'PHONE', 'RANDOM']
 
-type Props = {
+type Props = Readonly<{
   onSubmit: (destination: PixDestination) => void
-}
+}>
 
 export function TransferDestinationStep({ onSubmit }: Props) {
   const { t } = useTranslation()

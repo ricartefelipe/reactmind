@@ -622,10 +622,28 @@ h2 {
 }
 
 .balance-card__track {
+  width: 100%;
   height: 0.55rem;
   border-radius: 999px;
-  background: color-mix(in srgb, white 22%, transparent);
   overflow: hidden;
+  appearance: none;
+  border: none;
+  background: color-mix(in srgb, white 22%, transparent);
+}
+
+.balance-card__track::-webkit-progress-bar {
+  border-radius: 999px;
+  background: color-mix(in srgb, white 22%, transparent);
+}
+
+.balance-card__track::-webkit-progress-value {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), white);
+}
+
+.balance-card__track::-moz-progress-bar {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), white);
 }
 
 .balance-card__fill {
