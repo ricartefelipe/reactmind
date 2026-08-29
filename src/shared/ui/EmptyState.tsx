@@ -1,8 +1,8 @@
-type Props = {
+type Props = Readonly<{
   title?: string
   description?: string
   message?: string
-}
+}>
 
 export function EmptyState({ title, description, message }: Props) {
   return (

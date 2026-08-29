@@ -2,11 +2,11 @@ import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/shared/ui/Button'
 
-type Props = {
+type Props = Readonly<{
   onSkip: () => void
   onSubmit: (iso: string) => void
   onBack: () => void
-}
+}>
 
 export function TransferScheduleStep({ onSkip, onSubmit, onBack }: Props) {
   const { t } = useTranslation()

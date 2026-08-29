@@ -5,10 +5,10 @@ import { Button } from '@/shared/ui/Button'
 import { formatCents } from '@/shared/utils/money'
 import type { PixTransfer } from '../types'
 
-type Props = {
+type Props = Readonly<{
   receipt: PixTransfer
   onAgain: () => void
-}
+}>
 
 export function TransferReceipt({ receipt, onAgain }: Props) {
   const { t, i18n } = useTranslation()

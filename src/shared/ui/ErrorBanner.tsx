@@ -2,11 +2,11 @@ import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from './Button'
 
-type Props = {
+type Props = Readonly<{
   message: string
   correlationId?: string
   action?: ReactNode
-}
+}>
 
 export function ErrorBanner({ message, correlationId, action }: Props) {
   const { t } = useTranslation()

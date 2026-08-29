@@ -4,13 +4,13 @@ import { Button } from '@/shared/ui/Button'
 import { formatCents } from '@/shared/utils/money'
 import type { CreatePixInput } from '../types'
 
-type Props = {
+type Props = Readonly<{
   draft: CreatePixInput
   loading?: boolean
   hasError?: boolean
   onConfirm: () => void
   onBack: () => void
-}
+}>
 
 export function TransferConfirm({
   draft,
