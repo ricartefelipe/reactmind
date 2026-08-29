@@ -18,7 +18,9 @@
             document.documentElement.dataset.theme = parsed.theme
           }
         }
-      } catch (e) {}
+      } catch {
+        /* localStorage indisponível ou JSON inválido — mantém tema padrão */
+      }
     </script>
   </head>
   <body>

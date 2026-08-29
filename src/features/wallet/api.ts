@@ -15,8 +15,7 @@ export async function fetchTransactions(filters: TransactionFilters = {}) {
   if (filters.page !== undefined) params.set('page', String(filters.page))
   if (filters.pageSize !== undefined) params.set('pageSize', String(filters.pageSize))
   const query = params.toString()
-  const raw = await http.get<Partial<TransactionsPage>>(
-    `/wallet/transactions${query ? `?${query}` : ''}`,
-  )
+  const path = query ? `/wallet/transactions?${query}` : '/wallet/transactions'
+  const raw = await http.get<Partial<TransactionsPage>>(path)
   return normalizeTransactionsPage(raw, filters.page ?? 1, filters.pageSize ?? 20)
 }

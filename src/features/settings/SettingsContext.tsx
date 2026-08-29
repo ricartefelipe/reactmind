@@ -42,7 +42,7 @@ function persistSettings(state: SettingsState): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
 }
 
-export function SettingsProvider({ children }: { children: ReactNode }) {
+export function SettingsProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [state, setState] = useState<SettingsState>(() => readSettings())
 
   useEffect(() => {

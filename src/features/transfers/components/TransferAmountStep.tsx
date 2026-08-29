@@ -4,10 +4,10 @@ import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
 import { parseReaisToCents } from '@/shared/utils/money'
 
-type Props = {
+type Props = Readonly<{
   onSubmit: (amountCents: number) => void
   onBack: () => void
-}
+}>
 
 export function TransferAmountStep({ onSubmit, onBack }: Props) {
   const { t } = useTranslation()

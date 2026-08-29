@@ -1,7 +1,3 @@
-export function LoadingBlock({ label = 'Carregando…' }: { label?: string }) {
-  return (
-    <p className="loading" role="status">
-      {label}
-    </p>
-  )
+export function LoadingBlock({ label = 'Carregando…' }: Readonly<{ label?: string }>) {
+  return <output className="loading">{label}</output>
 }

@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { formatCents, toCents } from '@/shared/utils/money'
 
-type Props = {
+type Props = Readonly<{
   availableCents: number
   blockedCents: number
   dailyLimitCents: number
   dailySpentCents: number
   currency: string
-}
+}>
 
 export function BalanceCard({
   availableCents,
@@ -54,18 +54,12 @@ export function BalanceCard({
             {spent} / {limit}
           </span>
         </div>
-        <div
+        <progress
           className="balance-card__track"
-          role="progressbar"
-          aria-valuenow={limitPercent}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          <div
-            className="balance-card__fill"
-            style={{ width: `${limitPercent}%` }}
-          />
-        </div>
+          value={limitPercent}
+          max={100}
+          aria-label={t('wallet.dailyLimit')}
+        />
       </div>
     </div>
   )

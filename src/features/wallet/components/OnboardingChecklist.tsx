@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import type { OnboardingStep } from '@/features/onboarding/types'
 
-type Props = {
+type Props = Readonly<{
   steps: OnboardingStep[]
   completed: boolean
   doneCount: number
-}
+}>
 
 export function OnboardingChecklist({ steps, completed, doneCount }: Props) {
   const { t } = useTranslation()
