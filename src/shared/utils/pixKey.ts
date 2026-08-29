@@ -1,4 +1,4 @@
-import { assertValidPixKey, type PixKeyType } from '@ricartefelipe/mind-wallet-shared/pixKey'
+import { assertValidPixKey, type PixKeyType } from '@/shared/mind-wallet/pixKey'
 
 export type { PixKeyType }
 
