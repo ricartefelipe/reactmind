@@ -36,6 +36,7 @@ jobs:
 
   sonar:
     needs: test
+    if: vars.SONAR_CI_ENABLED == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
