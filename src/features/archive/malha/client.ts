@@ -22,6 +22,14 @@ export type ArchiveClientOptions = {
 
 export type ArchiveClient = ReturnType<typeof createArchiveClient>
 
+async function parseResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    const detail = await response.text()
+    throw new Error(detail || response.statusText)
+  }
+  return (await response.json()) as T
+}
+
 export function createArchiveClient(options: ArchiveClientOptions) {
   const base = options.baseUrl.replace(/\/$/, '')
   const token = options.token
@@ -30,29 +38,21 @@ export function createArchiveClient(options: ArchiveClientOptions) {
     return { 'X-Mind-Token': token, ...extra }
   }
 
-  async function parse<T>(response: Response): Promise<T> {
-    if (!response.ok) {
-      const detail = await response.text()
-      throw new Error(detail || response.statusText)
-    }
-    return (await response.json()) as T
-  }
-
   return {
     async listWorkspaces(): Promise<Workspace[]> {
-      return parse(await fetch(`${base}/workspaces`))
+      return parseResponse(await fetch(`${base}/workspaces`))
     },
 
     async listDocuments(workspaceId: string): Promise<DocumentRow[]> {
       const id = assertSafeId(workspaceId)
-      return parse(
+      return parseResponse(
         await fetch(`${base}/workspaces/${id}/documents`, { headers: authHeaders() }),
       )
     },
 
     async fetchGraph(workspaceId: string): Promise<GraphSnapshot> {
       const id = assertSafeId(workspaceId)
-      return parse(
+      return parseResponse(
         await fetch(`${base}/workspaces/${id}/graph`, { headers: authHeaders() }),
       )
     },
@@ -63,7 +63,7 @@ export function createArchiveClient(options: ArchiveClientOptions) {
       hops: number,
     ): Promise<QueryResult> {
       const id = assertSafeId(workspaceId)
-      return parse(
+      return parseResponse(
         await fetch(`${base}/workspaces/${id}/query`, {
           method: 'POST',
           headers: authHeaders({ 'Content-Type': 'application/json' }),
@@ -79,7 +79,7 @@ export function createArchiveClient(options: ArchiveClientOptions) {
       queryId: string | null,
     ): Promise<void> {
       const id = assertSafeId(workspaceId)
-      await parse(
+      await parseResponse(
         await fetch(`${base}/workspaces/${id}/feedback`, {
           method: 'POST',
           headers: authHeaders({ 'Content-Type': 'application/json' }),
@@ -92,7 +92,7 @@ export function createArchiveClient(options: ArchiveClientOptions) {
       const id = assertSafeId(workspaceId)
       const body = new FormData()
       body.append('file', file)
-      return parse(
+      return parseResponse(
         await fetch(`${base}/workspaces/${id}/ingest`, {
           method: 'POST',
           headers: authHeaders(),
@@ -103,7 +103,7 @@ export function createArchiveClient(options: ArchiveClientOptions) {
 
     async seedWorkspace(workspaceId: string): Promise<unknown> {
       const id = assertSafeId(workspaceId)
-      return parse(
+      return parseResponse(
         await fetch(`${base}/workspaces/${id}/seed`, {
           method: 'POST',
           headers: authHeaders(),
