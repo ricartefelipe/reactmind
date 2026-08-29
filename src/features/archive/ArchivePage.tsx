@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   entityTypeLabel,
@@ -10,7 +10,7 @@ import {
   type Evidence,
   type GraphSnapshot,
   type QueryResult,
-} from '@ricartefelipe/mind-wallet-shared/archive/types'
+} from './malha/types'
 import { Button } from '@/shared/ui/Button'
 import { ErrorBanner } from '@/shared/ui/ErrorBanner'
 import { ARCHIVE_PROMPTS, archiveClient, DEFAULT_WORKSPACE_SLUG } from './api'
@@ -32,18 +32,7 @@ export function ArchivePage() {
   const [notice, setNotice] = useState<string | null>(null)
   const [bootError, setBootError] = useState<string | null>(null)
 
-  useEffect(() => {
-    void bootstrap()
-  }, [])
-
-  useEffect(() => {
-    if (!workspaceId) {
-      return
-    }
-    void refreshArchive(workspaceId)
-  }, [workspaceId, tab])
-
-  async function bootstrap() {
+  const bootstrap = useCallback(async () => {
     try {
       const list = await archiveClient.listWorkspaces()
       const preferred =
@@ -59,21 +48,35 @@ export function ArchivePage() {
         error instanceof Error ? error.message : t('archive.errors.unavailable'),
       )
     }
-  }
+  }, [t])
 
-  async function refreshArchive(id: string) {
-    try {
-      const docs = await archiveClient.listDocuments(id)
-      setDocuments(docs)
-      if (tab === 'grafo') {
-        setGraph(await archiveClient.fetchGraph(id))
+  const refreshArchive = useCallback(
+    async (id: string) => {
+      try {
+        const docs = await archiveClient.listDocuments(id)
+        setDocuments(docs)
+        if (tab === 'grafo') {
+          setGraph(await archiveClient.fetchGraph(id))
+        }
+      } catch (error) {
+        setNotice(
+          error instanceof Error ? error.message : t('archive.errors.loadFailed'),
+        )
       }
-    } catch (error) {
-      setNotice(
-        error instanceof Error ? error.message : t('archive.errors.loadFailed'),
-      )
+    },
+    [tab, t],
+  )
+
+  useEffect(() => {
+    void bootstrap()
+  }, [bootstrap])
+
+  useEffect(() => {
+    if (!workspaceId) {
+      return
     }
-  }
+    void refreshArchive(workspaceId)
+  }, [workspaceId, refreshArchive])
 
   async function runQuery(event: FormEvent) {
     event.preventDefault()

@@ -6,11 +6,7 @@
     "module": "esnext",
     "types": ["vite/client", "vitest/globals"],
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@ricartefelipe/mind-wallet-shared/archive": ["../mind-shared/dist/archive/client"],
-      "@ricartefelipe/mind-wallet-shared/archive/types": ["../mind-shared/dist/archive/types"]
-    },
+    "paths": { "@/*": ["src/*"] },
     "ignoreDeprecations": "6.0",
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,

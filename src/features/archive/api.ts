@@ -1,4 +1,4 @@
-import { createArchiveClient } from '@ricartefelipe/mind-wallet-shared/archive'
+import { createArchiveClient } from './malha/client'
 
 const baseUrl = import.meta.env.VITE_MALHA_URL ?? '/malha'
 const token = import.meta.env.VITE_MIND_TOKEN ?? 'mind-demo-atlas-norte'
