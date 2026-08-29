@@ -67,6 +67,7 @@ export function AppShell() {
               </span>
             ) : null}
           </NavLink>
+          <NavLink to="/arquivo">{t('nav.archive')}</NavLink>
           <NavLink to="/settings">{t('nav.settings')}</NavLink>
         </nav>
         <div className="shell__user-menu" ref={menuRootRef}>
