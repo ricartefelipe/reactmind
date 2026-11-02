@@ -48,7 +48,7 @@ Leia: [docs/guides/entrevista-react.md](docs/guides/entrevista-react.md)
 
 ## Apontar para o Spring
 
-Por padrão o MSW atende `/api/v1` no browser durante o desenvolvimento (`src/main.tsx`). Builds de produção Pages desligam o MSW (`VITE_ENABLE_MSW=false`). Para usar o backend Spring (`localhost:8080`) no dev:
+Por padrão o MSW atende `/api/v1` no browser durante o desenvolvimento (`src/main.tsx`). O build do GitHub Pages (`npm run build:pages`) também usa o MSW, sem depender de servidor. Para usar o backend Spring (`localhost:8080`) no dev:
 
 1. Desabilite o bloco que inicia o worker em `src/main.tsx` (mantenha o `createRoot`).
 2. Adicione proxy no Vite — exemplo em `vite.config.ts`:
