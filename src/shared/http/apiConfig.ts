@@ -1,6 +1,3 @@
-const DEFAULT_REMOTE_API =
-  'https://54.94.163.136.sslip.io/wallet-api/api/v1'
-
 export function apiBaseUrl(): string {
   const fromEnv = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim()
   if (fromEnv) return fromEnv.replace(/\/$/, '')
@@ -16,8 +13,4 @@ export function shouldEnableMsw(): boolean {
   )
   if (hasRemoteApi) return false
   return import.meta.env.DEV || import.meta.env.BASE_URL !== '/'
-}
-
-export function defaultRemoteApiBaseUrl(): string {
-  return DEFAULT_REMOTE_API
 }
