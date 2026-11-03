@@ -34,8 +34,9 @@ export type PixTransfer = {
   status: TransferStatus
   createdAt: string
   scheduledFor?: string
-  endToEndId: string
-  correlationId: string
+  /** Formato do arranjo PIX, com ISPB fictício. Ausente enquanto o agendado não executa ou quando falha. */
+  endToEndId?: string
+  correlationId?: string
 }
 
 export type QrPayloadResponse = {
