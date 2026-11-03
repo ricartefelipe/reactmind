@@ -18,6 +18,11 @@ export function TransferReceipt({ receipt, onAgain }: Props) {
         (item) => item.id === receipt.beneficiaryId,
       )?.name ?? receipt.beneficiaryId)
     : (receipt.pixKey ?? '')
+  const endToEndLabel =
+    receipt.endToEndId ||
+    (receipt.status === 'SCHEDULED'
+      ? t('transfers.receipt.endToEndPending')
+      : t('transfers.receipt.notAvailable'))
 
   return (
     <div className="transfer-step" data-testid="pix-receipt">
@@ -38,7 +43,9 @@ export function TransferReceipt({ receipt, onAgain }: Props) {
       </p>
       <p>
         <strong>{t('transfers.receipt.endToEnd')}:</strong>{' '}
-        <span data-testid="pix-end-to-end">{receipt.endToEndId}</span>
+        <span data-testid="pix-end-to-end" className="transfer-receipt__code">
+          {endToEndLabel}
+        </span>
       </p>
       <p>
         <strong>{t('transfers.receipt.when')}:</strong>{' '}
@@ -52,7 +59,12 @@ export function TransferReceipt({ receipt, onAgain }: Props) {
       ) : null}
       <p>
         <strong>{t('transfers.receipt.correlationId')}:</strong>{' '}
-        {receipt.correlationId}
+        <span data-testid="pix-correlation-id" className="transfer-receipt__code">
+          {receipt.correlationId || t('transfers.receipt.notAvailable')}
+        </span>
+      </p>
+      <p className="transfer-receipt__note" data-testid="pix-simulated-note">
+        {t('transfers.receipt.simulated')}
       </p>
       <div className="transfer-actions">
         <Button type="button" variant="secondary" onClick={onAgain}>

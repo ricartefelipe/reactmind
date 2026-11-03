@@ -49,7 +49,8 @@ describe('TransferPixPage', () => {
 
     expect(await screen.findByTestId('pix-receipt')).toBeInTheDocument()
     expect(screen.getByText('Concluído')).toBeInTheDocument()
-    expect(screen.getByTestId('pix-end-to-end')).not.toBeEmptyDOMElement()
+    expect(screen.getByTestId('pix-end-to-end')).toHaveTextContent(/^E\d{20}[a-zA-Z0-9]{11}$/)
+    expect(screen.getByTestId('pix-simulated-note')).toHaveTextContent('PIX simulado')
   })
 
   it('reutiliza a Idempotency-Key no retry após erro', async () => {

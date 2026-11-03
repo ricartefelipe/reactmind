@@ -101,6 +101,9 @@ export default {
       when: 'Data',
       scheduledFor: 'Agendado para',
       correlationId: 'Correlation ID',
+      notAvailable: 'Não disponível',
+      endToEndPending: 'Gerado quando o PIX for executado',
+      simulated: 'PIX simulado: nenhum valor foi transferido. O end-to-end usa um ISPB fictício de demonstração.',
       again: 'Nova transferência',
     },
     qr: {

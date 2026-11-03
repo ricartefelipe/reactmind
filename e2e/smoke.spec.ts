@@ -62,7 +62,7 @@ test.describe('Mind Wallet 2.0 smoke', () => {
     await page.getByTestId('pix-skip-schedule').click()
     await page.getByTestId('pix-confirm-submit').click()
     await expect(page.getByTestId('pix-receipt')).toBeVisible()
-    await expect(page.getByTestId('pix-end-to-end')).not.toBeEmpty()
+    await expect(page.getByTestId('pix-end-to-end')).toHaveText(/^E\d{20}[a-zA-Z0-9]{11}$/)
 
     await nav(page).getByRole('link', { name: 'Início' }).click()
     await expect(page.getByTestId('onboarding-step-FIRST_PIX')).toHaveClass(
