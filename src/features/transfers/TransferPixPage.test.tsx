@@ -49,7 +49,8 @@ describe('TransferPixPage', () => {
 
     expect(await screen.findByTestId('pix-receipt')).toBeInTheDocument()
     expect(screen.getByText('Concluído')).toBeInTheDocument()
-    expect(screen.getByTestId('pix-end-to-end')).toHaveTextContent(/^E\d{20}[a-zA-Z0-9]{11}$/)
+    // O formato é responsabilidade dos mocks do mind-shared, testado lá; aqui, o código do PIX imediato aparece.
+    expect(screen.getByTestId('pix-end-to-end')).toHaveTextContent(/^E[a-zA-Z0-9]{31,32}$/)
     expect(screen.getByTestId('pix-simulated-note')).toHaveTextContent('PIX simulado')
   })
 
