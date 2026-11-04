@@ -6,7 +6,7 @@ import { Input } from '@/shared/ui/Input'
 import { isValidPixKey, type PixKeyType } from '@/shared/utils/pixKey'
 import type { PixDestination } from '../types'
 
-const pixKeyTypes: PixKeyType[] = ['EMAIL', 'CPF', 'PHONE', 'RANDOM']
+const pixKeyTypes: PixKeyType[] = ['EMAIL', 'CPF', 'CNPJ', 'PHONE', 'RANDOM']
 
 type Props = Readonly<{
   onSubmit: (destination: PixDestination) => void
