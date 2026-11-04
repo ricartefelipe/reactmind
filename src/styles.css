@@ -18,7 +18,18 @@ html[data-theme='light'] {
   --gold-soft: #daf3fb;
   --danger: #b33a32;
   --danger-bg: #f6dfdb;
-  --success: #1f8a55;
+  --success: #187548;
+  /* Cartão de saldo: fundo escuro fixo para o texto claro manter 4,5:1 em todo o degradê. */
+  --balance-from: #0854a1;
+  --balance-mid: #073a74;
+  --balance-to: #061a33;
+  --balance-text: #f4faf7;
+  --balance-label: #b8e9fa;
+  --balance-glow: color-mix(in srgb, #149eca 25%, transparent);
+  /* Botão principal: fundo que mantém 4,5:1 com o texto claro do botão. */
+  --btn-text: #f4faf7;
+  --btn-bg: var(--accent);
+  --btn-bg-hover: var(--accent-hover);
   --login-ink: #0a2540;
   --login-mist: #123e6b;
   --login-gold: #61dafb;
@@ -56,6 +67,15 @@ html[data-theme='dark'] {
   --danger-bg: #3a2220;
   --success: #58c48a;
   --hero-deep: #06101c;
+  --balance-from: #0a4d8f;
+  --balance-mid: #083463;
+  --balance-to: #06101c;
+  --balance-text: #f4faf7;
+  --balance-label: #b8e9fa;
+  --balance-glow: color-mix(in srgb, #149eca 25%, transparent);
+  --btn-text: #f4faf7;
+  --btn-bg: #2a73c0;
+  --btn-bg-hover: #2366ad;
 }
 
 * {
@@ -126,8 +146,8 @@ h2 {
   padding: var(--space-1) var(--space-3);
   border: 1px solid transparent;
   border-radius: 999px;
-  color: #f4faf7;
-  background: var(--accent);
+  color: var(--btn-text);
+  background: var(--btn-bg);
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -135,8 +155,8 @@ h2 {
 }
 
 .btn--primary {
-  color: #f4faf7;
-  background: var(--accent);
+  color: var(--btn-text);
+  background: var(--btn-bg);
 }
 
 .btn--secondary {
@@ -153,7 +173,7 @@ h2 {
 }
 
 .btn:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: var(--btn-bg-hover);
   transform: translateY(-1px);
 }
 
@@ -563,8 +583,8 @@ h2 {
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: none;
   border-radius: 22px;
-  background: linear-gradient(145deg, var(--accent) 0%, var(--accent-hover) 55%, var(--hero-deep) 100%);
-  color: #f4faf7;
+  background: linear-gradient(145deg, var(--balance-from) 0%, var(--balance-mid) 55%, var(--balance-to) 100%);
+  color: var(--balance-text);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent),
     0 18px 50px color-mix(in srgb, var(--accent) 28%, transparent);
 }
@@ -577,7 +597,7 @@ h2 {
   right: -40px;
   top: -60px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--gold) 55%, transparent), transparent 68%);
+  background: radial-gradient(circle, var(--balance-glow), transparent 68%);
 }
 
 .balance-card__primary,
@@ -591,7 +611,7 @@ h2 {
 .balance-card__meta-label {
   display: block;
   margin-bottom: 0.35rem;
-  color: color-mix(in srgb, var(--gold) 80%, white);
+  color: var(--balance-label);
   font-family: var(--font-ui);
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
