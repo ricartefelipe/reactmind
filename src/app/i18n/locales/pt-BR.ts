@@ -81,7 +81,9 @@ export default {
       amount: 'Valor (R$)',
       continue: 'Continuar',
       scheduleOptional: 'Agendar para (opcional)',
-      scheduleHint: 'Deixe em branco para enviar agora',
+      scheduleHint: 'Deixe em branco para enviar agora. O agendamento vale para até 365 dias.',
+      scheduleInPast: 'Escolha uma data e hora no futuro.',
+      scheduleTooFar: 'O PIX pode ser agendado para até 365 dias a partir de agora.',
       skipSchedule: 'Enviar agora',
       scheduleContinue: 'Continuar com agendamento',
     },
@@ -142,6 +144,7 @@ export default {
     types: {
       EMAIL: 'E-mail',
       CPF: 'CPF',
+      CNPJ: 'CNPJ',
       PHONE: 'Telefone',
       RANDOM: 'Aleatória',
     },

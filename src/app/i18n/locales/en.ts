@@ -81,7 +81,9 @@ export default {
       amount: 'Amount (BRL)',
       continue: 'Continue',
       scheduleOptional: 'Schedule for (optional)',
-      scheduleHint: 'Leave empty to send now',
+      scheduleHint: 'Leave empty to send now. Scheduling works up to 365 days ahead.',
+      scheduleInPast: 'Choose a date and time in the future.',
+      scheduleTooFar: 'PIX can be scheduled up to 365 days from now.',
       skipSchedule: 'Send now',
       scheduleContinue: 'Continue with schedule',
     },
@@ -143,6 +145,7 @@ export default {
       EMAIL: 'Email',
       CPF: 'CPF',
       PHONE: 'Phone',
+      CNPJ: 'CNPJ',
       RANDOM: 'Random',
     },
     validation: {
