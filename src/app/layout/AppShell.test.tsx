@@ -73,6 +73,51 @@ describe('AppShell', () => {
     expect(await screen.findByTestId('notifications-badge')).toBeInTheDocument()
   })
 
+  it('o botão de menu abre e fecha a navegação e informa o estado', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const toggle = screen.getByTestId('shell-nav-toggle')
+    const nav = screen.getByRole('navigation', { name: 'Principal' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveAttribute('aria-controls', nav.id)
+    expect(nav).not.toHaveClass('shell__nav--open')
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(nav).toHaveClass('shell__nav--open')
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(nav).not.toHaveClass('shell__nav--open')
+  })
+
+  it('Esc fecha a navegação aberta e devolve o foco ao botão de menu', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const toggle = screen.getByTestId('shell-nav-toggle')
+    await user.click(toggle)
+    await user.tab()
+    expect(screen.getByRole('link', { name: 'Início' })).toHaveFocus()
+
+    await user.keyboard('{Escape}')
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(toggle).toHaveFocus()
+  })
+
+  it('escolher uma página fecha a navegação', async () => {
+    const user = userEvent.setup()
+    renderShell()
+
+    const toggle = screen.getByTestId('shell-nav-toggle')
+    await user.click(toggle)
+    await user.click(screen.getByRole('link', { name: 'Início' }))
+
+    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument()
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  })
+
   it('abre menu da conta com perfil, ajustes e sair', async () => {
     const user = userEvent.setup()
     renderShell()

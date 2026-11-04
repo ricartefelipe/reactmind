@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/features/auth/AuthContext'
 import { useNotifications } from '@/features/notifications/hooks'
@@ -9,8 +9,13 @@ export function AppShell() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const notifications = useNotifications()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  // A navegação recolhida fica aberta só na página em que foi aberta: trocar de página a fecha.
+  const [navOpenAt, setNavOpenAt] = useState<string | null>(null)
+  const navOpen = navOpenAt === location.pathname
   const menuRootRef = useRef<HTMLDivElement | null>(null)
+  const navToggleRef = useRef<HTMLButtonElement | null>(null)
   const unreadCount =
     notifications.data?.items.filter((item) => !item.read).length ?? 0
   const initials =
@@ -42,6 +47,20 @@ export function AppShell() {
     }
   }, [menuOpen])
 
+  useEffect(() => {
+    if (!navOpen) return
+
+    function onDocumentKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setNavOpenAt(null)
+        navToggleRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onDocumentKeydown)
+    return () => document.removeEventListener('keydown', onDocumentKeydown)
+  }, [navOpen])
+
   return (
     <div className="shell">
       <header className="shell__header">
@@ -49,7 +68,23 @@ export function AppShell() {
           <span className="shell__mark" aria-hidden="true" />
           {t('app.name')}
         </NavLink>
-        <nav className="shell__nav" aria-label="Principal">
+        <button
+          type="button"
+          ref={navToggleRef}
+          className="shell__nav-toggle"
+          data-testid="shell-nav-toggle"
+          aria-expanded={navOpen}
+          aria-controls="shell-nav"
+          onClick={() => setNavOpenAt(navOpen ? null : location.pathname)}
+        >
+          <span className="shell__nav-toggle-icon" aria-hidden="true" />
+          {t('nav.menu')}
+        </button>
+        <nav
+          id="shell-nav"
+          className={navOpen ? 'shell__nav shell__nav--open' : 'shell__nav'}
+          aria-label="Principal"
+        >
           <NavLink to="/" end>
             {t('nav.dashboard')}
           </NavLink>
