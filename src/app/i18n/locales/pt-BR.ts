@@ -3,6 +3,7 @@ export default {
     name: 'ReactMind',
   },
   nav: {
+    menu: 'Menu',
     dashboard: 'Início',
     transactions: 'Extrato',
     transferPix: 'PIX',
