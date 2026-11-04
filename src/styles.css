@@ -999,6 +999,19 @@ h2 {
 .transaction-list li > div {
   display: grid;
   gap: 0.25rem;
+  /* Sem isto, um nome ou uma chave longa não encolhe e empurra a linha para fora da tela no celular. */
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-list li > button {
+  flex-shrink: 0;
+}
+
+.transaction-list strong,
+.transaction-list span,
+.transaction-list time {
+  overflow-wrap: anywhere;
 }
 
 .transaction-list span,
