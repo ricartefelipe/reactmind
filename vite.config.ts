@@ -23,6 +23,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
+    // O teste de contraste lê os tokens como texto (?raw); o restante do CSS segue ignorado nos testes.
+    css: { include: [/src\/styles\.css/] },
     exclude: ['**/node_modules/**', '**/e2e/**', '**/dist/**'],
   },
 })

@@ -13,7 +13,7 @@ import {
   useDeleteBeneficiary,
 } from './hooks'
 
-const pixKeyTypes: PixKeyType[] = ['EMAIL', 'CPF', 'PHONE', 'RANDOM']
+const pixKeyTypes: PixKeyType[] = ['EMAIL', 'CPF', 'CNPJ', 'PHONE', 'RANDOM']
 
 export function BeneficiariesPage() {
   const { t } = useTranslation()
